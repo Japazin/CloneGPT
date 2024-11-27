@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <SignInPage />,
       },
       {
-        path: "/sign-ip*",
+        path: "/sign-up*",
         element: <SignUpPage />,
       },
       {
