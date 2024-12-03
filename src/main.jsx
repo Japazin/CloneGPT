@@ -3,12 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Homepage from "./routes/homepage/Homepage";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import RootLoayout from "./routes/layouts/rootLayout/RootLayout";
-import DashboardLayout from "./routes/layouts/dashboardLayout/dashboardLayout";
-import ChatPage from "./routes/chatPage/ChatPage";
-import DashboardPage from "./routes/dashboardPage/DashboardPage";
 import SignInPage from "./routes/signInPage/signInPage";
+import DashboardPage from "./routes/dashboardPage/DashboardPage";
 import SignUpPage from "./routes/signUpPage/signUpPage";
+import DashboardLayout from "./layouts/dashboardLayout/dashboardLayout"
+import RootLoayout from "./layouts/rootLayout/RootLayout";
+import ChatPage from "./routes/chatPage/ChatPage";
+
+
 
 const router = createBrowserRouter([
   {
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/sign-up*",
-        element: <SignUpPage />,
+        element: <SignUpPage/>,
       },
       {
         element: <DashboardLayout />,

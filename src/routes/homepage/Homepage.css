@@ -4,7 +4,8 @@
   gap: 100px;
   height: 100%;
 @media screen and (max-width: 1024px) {
-  flex-direction: column;
+  flex-direction: column ;
+  gap: 0;
 }
 
   .left {
@@ -21,10 +22,17 @@
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+
+      @media screen and (max-width: 1280px) {
+      font-size: 64px;
+      }
     }
     h3 {
       font-weight: 400;
       max-width: 70%;
+      @media screen and (max-width: 1024px) {
+       max-width: 100%;
+      }
     }
     a {
       padding: 15px 25px;
@@ -56,6 +64,9 @@
       width: 80%;
       height: 50%;
       position: relative;
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
 
       .bgContainer {
         width: 100%;
