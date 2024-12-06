@@ -10,7 +10,7 @@ const ChatList = () => {
        <Link to="/">Contact</Link>
        <hr/>
        <span className='title'>RECENT CHATS</span>
-       <div className="List">
+       <div className="list">
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
@@ -18,10 +18,13 @@ const ChatList = () => {
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
+       <Link to="/">ChatList</Link>
+       <Link to="/">ChatList</Link>
+       
        </div>
        <hr/>
        <div className="upgrade">
-        <img src="/logo" alt="" />
+        <img src="/logo.png" alt="" />
         <div className="texts">
             <span>Upgrade to JAP IA pro</span>
             <span>Get unilimited acess to all features</span>
