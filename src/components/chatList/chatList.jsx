@@ -19,8 +19,7 @@ const ChatList = () => {
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
        <Link to="/">ChatList</Link>
-       <Link to="/">ChatList</Link>
-       
+       <Link to="/">ChatList</Link>    
        </div>
        <hr/>
        <div className="upgrade">
