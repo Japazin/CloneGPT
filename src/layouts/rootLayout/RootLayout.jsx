@@ -22,21 +22,21 @@ const RootLoayout = () => {
     console.log(e);
 
     // Bloquear teclas como F12 (Ferramentas de Desenvolvedor), PrintScreen, Ctrl + P (impressão)
-    if (
-      e.key === "F12" || // Detecta F12
-      (e.ctrlKey && e.key === "p") || // Bloqueia Ctrl + P
-      e.key === "PrintScreen" || // Bloqueia PrintScreen
-      e.keyCode === 44 || // Outra forma de capturar PrintScreen (keyCode)
-      e.key === "Meta" // Bloqueia a tecla Win (Meta)
-    ) {
-      e.preventDefault();
-      setShowBlackScreen(true); // Ativa a tela preta
-    }
+    // if (
+    //   e.key === "F12" || // Detecta F12
+    //   (e.ctrlKey && e.key === "p") || // Bloqueia Ctrl + P
+    //   e.key === "PrintScreen" || // Bloqueia PrintScreen
+    //   e.keyCode === 44 || // Outra forma de capturar PrintScreen (keyCode)
+    //   e.key === "Meta" // Bloqueia a tecla Win (Meta)
+    // ) {
+    //   e.preventDefault();
+    //   setShowBlackScreen(true); // Ativa a tela preta
+    // }
 
     // Bloquear clique direito
-    if (e.type === 'contextmenu') {
-      e.preventDefault();
-    }
+    // if (e.type === 'contextmenu') {
+    //   e.preventDefault();
+    // }
   };
 
   // Função para esconder a tela preta
