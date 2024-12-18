@@ -18,8 +18,9 @@
     }
     .list{
         display: flex;
-        flex-direction: column;
-      overflow: auto;
+        flex-direction: column; 
+        overflow-y: auto;
+        overflow-x: auto;
     }
     a {
         padding: 10px;
