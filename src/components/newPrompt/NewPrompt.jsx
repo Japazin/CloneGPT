@@ -3,8 +3,8 @@ import "./newPrompt.css";
 
 const NewPrompt = () => {
   return (
-    <div className="newPrompt">
-      <form action="newForm">
+    <>
+      <form className="newForm">
         <label htmlFor="file">
           <img src="/attachment.png" alt=""/>
         </label>
@@ -14,7 +14,7 @@ const NewPrompt = () => {
         <img src="/arrow.png" alt="" />
         </button>
       </form>
-    </div>
+    </>
   )
 }
 
