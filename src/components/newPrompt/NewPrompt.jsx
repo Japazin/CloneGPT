@@ -4,6 +4,8 @@ import "./newPrompt.css";
 const NewPrompt = () => {
   return (
     <>
+     {/* ADD NEW CHAT */}
+      <div className="endChat"></div>
       <form className="newForm">
         <label htmlFor="file">
           <img src="/attachment.png" alt=""/>
