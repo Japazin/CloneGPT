@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router";
 import "./rootLayout.css";
-import { BrowserRouter } from "react-router-dom";
+
 import {
   ClerkProvider,
   SignedIn,
@@ -57,7 +57,7 @@ const RootLoayout = () => {
   }, []);
 
   return (
-    <BrowserRouter>
+
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <div className="rootLayout">
           {showBlackScreen && (
@@ -81,7 +81,7 @@ const RootLoayout = () => {
           </main>
         </div>
       </ClerkProvider>
-    </BrowserRouter>
+    
   );
 };
 
