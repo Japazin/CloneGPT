@@ -20,7 +20,7 @@ const authenticator =  async () => {
         throw new Error(`Authentication request failed: ${error.message}`);
     }
 };
-const Upload = () => {
+const Upload = ({setImg}) => {
     
 const onError = err => {
     console.log("Error", err);
@@ -28,6 +28,7 @@ const onError = err => {
   
   const onSuccess = res => {
     console.log("Success", res);
+    setImg(prev=>({...prev, isLoading: false, dbData: res}));
   };
   
   const onUploadProgress = progress => {
@@ -36,6 +37,7 @@ const onError = err => {
   
   const onUploadStart = evt => {
     console.log("Start", evt);
+    setImg(prev=>({...prev, isLoading: true}));
   };
   return (
     <IKContext
