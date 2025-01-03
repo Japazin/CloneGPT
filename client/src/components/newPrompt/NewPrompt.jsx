@@ -3,8 +3,11 @@ import "./newPrompt.css";
 import Upload from "../upload/upload";
 import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini";
+import Markdown from "react-markdown";
 
 const NewPrompt = () => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const [img, setImg] = useState({
     isLoading: false,
     error: "",
@@ -14,14 +17,20 @@ const NewPrompt = () => {
   const endRef = useRef(null);
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [question, answer, img.dbData]);
 
-  const add = async (e) => {
-    const prompt = "em que ano o brasil foi descoberto?";
+  const add = async (text) => {
+    setQuestion(text);
+    const result = await model.generateContent(text);
+    setAnswer(result.response.text());
+  };
 
-    const result = await model.generateContent(prompt);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const text = e.target.text.value;
+    if (!text) return;
 
-    console.log(result.response.text());
+    add(text);
   };
 
   return (
@@ -36,12 +45,17 @@ const NewPrompt = () => {
           transformation={[{ width: 380 }]}
         />
       )}
-      <button onClick={add}>TESTE IA</button>
+      {question && <div className="message user">{question}</div>}
+      {answer && (
+        <div className="message ">
+          <Markdown>{answer}</Markdown>
+        </div>
+      )}
       <div className="endChat" ref={endRef}></div>
-      <form className="newForm">
+      <form className="newForm" onSubmit={handleSubmit}>
         <Upload setImg={setImg} />
         <input id="file" type="file" multiple={false} hidden />
-        <input type="text" placeholder="Ask Anything..." />
+        <input type="text" name="text" placeholder="Ask Anything..." />
         <button>
           <img src="/arrow.png" alt="" />
         </button>
