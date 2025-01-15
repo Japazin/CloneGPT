@@ -12,6 +12,7 @@ app.use(
   })
 );
 
+app.use(express.json());
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -30,6 +31,37 @@ const imagekit = new ImageKit({
 app.get("/api/upload", (req, res) => {
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
+});
+
+app.post("/api/chats", async (req, res) => {
+  const { userId, text } = req.body;
+  try {
+    //CREAT NEW CHT
+    const newChat = new Chat({
+      userId: userId,
+      history: [{ role: "user", parts: [{ text }] }],
+    });
+    const savedChat = await chat.save();
+    // CHECK IF CHAT EXISTS
+    const userChats = await userChats.findOne({ userId: userId });
+    // IF DOESNT EXIST CREATE NRE ONDE AND ADD THE CHAT IN THE ARRAY
+    if (!userChats.length) {
+      const newUserChats = new userChats({
+        userId: userId,
+        chats: [
+          {
+            _id: savedChat.id,
+            title: text.substring(0, 40),
+          },
+        ],
+      });
+    }else{
+      //IF EXISTS PUSH THE CHAT TO THE EXISTING ARRAY
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("error creating chat");
+  }
 });
 
 app.listen(port, () => {

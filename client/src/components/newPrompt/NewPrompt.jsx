@@ -50,7 +50,7 @@ const NewPrompt = () => {
     setImg({ isLoading: false, error: "", dbData: {}, aiData: {} });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const text = e.target.text.value;
     if (!text) return;
