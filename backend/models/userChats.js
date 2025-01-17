@@ -1,32 +1,30 @@
 import mongoose from "mongoose";
 
-const ChatSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-  },
-  history: [
-    {
-      role: {
-        enum: ["user", "admin"],
-        type: String,
-        required: true,
-      },
-      parts: [
-        {
-          text: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-      img: {
-        type: String,
-        required: false,
-      },
+const userChatsSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
     },
-  ],
-},{
-    timestamps: true,
-});
-export default mongoose.models.chat || mongoose.model("UserChats", ChatSchema);
+    chats: [
+      {
+        _id: {
+          type: String,
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default:Date.now()
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.userchats ||
+  mongoose.model("userchats", userChatsSchema);

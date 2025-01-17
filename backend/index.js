@@ -3,6 +3,9 @@ import express from "express";
 import ImageKit from "imagekit";
 import cors from "cors";
 import mongoose from "mongoose";
+import Chat from "./models/chat.js";
+import UserChats from "./models/userChats.js";
+
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -36,27 +39,40 @@ app.get("/api/upload", (req, res) => {
 app.post("/api/chats", async (req, res) => {
   const { userId, text } = req.body;
   try {
-    //CREAT NEW CHT
+    //CREAT NEW CHAT
     const newChat = new Chat({
       userId: userId,
       history: [{ role: "user", parts: [{ text }] }],
     });
-    const savedChat = await chat.save();
+    const savedChat = await newChat.save();
     // CHECK IF CHAT EXISTS
-    const userChats = await userChats.findOne({ userId: userId });
+    const userChats = await UserChats.find({ userId: userId });
     // IF DOESNT EXIST CREATE NRE ONDE AND ADD THE CHAT IN THE ARRAY
     if (!userChats.length) {
-      const newUserChats = new userChats({
+      const newUserChats = new UserChats({
         userId: userId,
         chats: [
           {
-            _id: savedChat.id,
+            _id: savedChat._id,
             title: text.substring(0, 40),
           },
         ],
       });
-    }else{
+      await newUserChats.save();
+    } else {
       //IF EXISTS PUSH THE CHAT TO THE EXISTING ARRAY
+      await UserChats.updateOne(
+        { userId: userId },
+        {
+          $push: {
+            chats: {
+              _id: savedChat._id,
+              title: text.substring(0, 40),
+            },
+          },
+        }
+      );
+      res.status(201).send(newChat._id);
     }
   } catch (err) {
     console.log(err);
