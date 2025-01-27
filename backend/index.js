@@ -5,6 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import Chat from "./models/chat.js";
 import UserChats from "./models/userChats.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -12,6 +13,7 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
+    credentials: true,
   })
 );
 
@@ -35,51 +37,61 @@ app.get("/api/upload", (req, res) => {
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
 });
+app.get("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
+  res.send("Sucess!");});
 
-app.post("/api/chats", async (req, res) => {
-  const { userId, text } = req.body;
-  try {
-    //CREAT NEW CHAT
-    const newChat = new Chat({
-      userId: userId,
-      history: [{ role: "user", parts: [{ text }] }],
-    });
-    const savedChat = await newChat.save();
-    // CHECK IF CHAT EXISTS
-    const userChats = await UserChats.find({ userId: userId });
-    // IF DOESNT EXIST CREATE NRE ONDE AND ADD THE CHAT IN THE ARRAY
-    if (!userChats.length) {
-      const newUserChats = new UserChats({
+app.post(
+  "/api/chats",
+  ClerkExpressRequireAuth(),
+  (req, res) => {},
+  async (req, res) => {
+    const { userId, text } = req.body;
+    try {
+      //CREAT NEW CHAT
+      const newChat = new Chat({
         userId: userId,
-        chats: [
-          {
-            _id: savedChat._id,
-            title: text.substring(0, 40),
-          },
-        ],
+        history: [{ role: "user", parts: [{ text }] }],
       });
-      await newUserChats.save();
-    } else {
-      //IF EXISTS PUSH THE CHAT TO THE EXISTING ARRAY
-      await UserChats.updateOne(
-        { userId: userId },
-        {
-          $push: {
-            chats: {
+      const savedChat = await newChat.save();
+      // CHECK IF CHAT EXISTS
+      const userChats = await UserChats.find({ userId: userId });
+      // IF DOESNT EXIST CREATE NRE ONDE AND ADD THE CHAT IN THE ARRAY
+      if (!userChats.length) {
+        const newUserChats = new UserChats({
+          userId: userId,
+          chats: [
+            {
               _id: savedChat._id,
               title: text.substring(0, 40),
             },
-          },
-        }
-      );
-      res.status(201).send(newChat._id);
+          ],
+        });
+        await newUserChats.save();
+      } else {
+        //IF EXISTS PUSH THE CHAT TO THE EXISTING ARRAY
+        await UserChats.updateOne(
+          { userId: userId },
+          {
+            $push: {
+              chats: {
+                _id: savedChat._id,
+                title: text.substring(0, 40),
+              },
+            },
+          }
+        );
+        res.status(201).send(newChat._id);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("error creating chat");
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("error creating chat");
   }
+);
+app.use((req, res, next) => {
+  console.log(err.stack);
+  res.status(401).send("UNAUTHENTICATED");
 });
-
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   connect();
