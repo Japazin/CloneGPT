@@ -37,8 +37,11 @@ app.get("/api/upload", (req, res) => {
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
 });
-app.get("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
-  res.send("Sucess!");});
+app.get("/api/test", ClerkExpressRequireAuth(), (req, res) => {
+  const { userId } = req.auth.userId;
+ console.log(userId),
+  res.send("Sucess!");
+});
 
 app.post(
   "/api/chats",
@@ -88,7 +91,7 @@ app.post(
     }
   }
 );
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
   console.log(err.stack);
   res.status(401).send("UNAUTHENTICATED");
 });
