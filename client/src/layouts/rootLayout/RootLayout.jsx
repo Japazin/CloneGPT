@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React  from "react";
 import { Link, Outlet } from "react-router";
 import "./rootLayout.css";
 import {
@@ -21,11 +21,11 @@ const queryClient = new QueryClient()
 
 
 const RootLoayout = () => {
-  const [showBlackScreen, setShowBlackScreen] = useState(false);
+  // const [showBlackScreen, setShowBlackScreen] = useState(false);
 
   // Função para prevenir o comportamento de impressão, captura de tela e clique direito
-  const preventActions = (e) => {
-    console.log(e);
+  // const preventActions = (e) => {
+  //   console.log(e);
 
     // Bloquear teclas como F12 (Ferramentas de Desenvolvedor), PrintScreen, Ctrl + P (impressão)
     // if (
@@ -43,35 +43,31 @@ const RootLoayout = () => {
     // if (e.type === 'contextmenu') {
     //   e.preventDefault();
     // }
-  };
+  // };
 
   // Função para esconder a tela preta
-  const hideBlackScreen = () => {
-    setShowBlackScreen(false);
-  };
+  // const hideBlackScreen = () => {
+  //   setShowBlackScreen(false);
+  // };
 
   // Adiciona o evento para prevenir ações de impressão, captura de tela e clique direito
-  useEffect(() => {
-    document.addEventListener('keydown', preventActions); // Previne ações de teclado
-    document.addEventListener('contextmenu', preventActions); // Previne clique direito
+  // useEffect(() => {
+  //   document.addEventListener('keydown', preventActions); // Previne ações de teclado
+  //   document.addEventListener('contextmenu', preventActions); // Previne clique direito
 
-    // Remove os eventos quando o componente for desmontado
-    return () => {
-      document.removeEventListener('keydown', preventActions);
-      document.removeEventListener('contextmenu', preventActions);
-    };
-  }, []);
+  //   // Remove os eventos quando o componente for desmontado
+  //   return () => {
+  //     document.removeEventListener('keydown', preventActions);
+  //     document.removeEventListener('contextmenu', preventActions);
+  //   };
+  // }, []);
 
   return (
 
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <QueryClientProvider client={queryClient}>
         <div className="rootLayout">
-          {showBlackScreen && (
-            <div className="blackScreen" onClick={hideBlackScreen}>
-              {/* Clique na tela preta para fechá-la */}
-            </div>
-          )}
+    
           <header>
             <Link to="/" className="logo">
               <img src="/logo.png" alt="" />

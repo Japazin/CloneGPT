@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
   const { isPending, error, data } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["userChats"],
     queryFn: () =>
       fetch(`${import.meta.env.VITE_API_URL}/api/userchats`, {
         credentials: "include",
@@ -13,7 +13,7 @@ const ChatList = () => {
   return (
     <div className="chatList">
       <span className="title">DASHBOARD</span>
-      <Link to="/dashboard"></Link>
+      <Link to="/dashboard">Create a New Chat</Link>
       <Link to="/">Explore Jap IA</Link>
       <Link to="/">Contact</Link>
       <hr />

@@ -3,6 +3,7 @@ import NewPrompt from "../../components/newPrompt/NewPrompt";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router";
 import Markdown from "react-markdown";
+import { IKImage } from "imagekitio-react";
 
 const ChatPage = () => {
   const path = useLocation().pathname;
@@ -23,9 +24,27 @@ const ChatPage = () => {
             : error
             ? "Something went wrong!"
             : data?.history?.map((message, i) => (
-                <div className="message user" key={i}>
+              <>
+              {message.img && (
+                <IKImage
+                urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+                path={message.img}
+                height="300"
+                widht="400"
+                transformation={[{height: 300, width: 400}]}
+                loading="lazy"
+                lqip={{ active: true,quality: 20 }}
+                />
+              ) }
+                <div
+                  className={
+                    message.role === "user" ? "message user" : "message"
+                  }
+                  key={i}
+                >
                   <Markdown>{message.parts[0].text}</Markdown>
                 </div>
+                </>
               ))}
 
           <NewPrompt />
