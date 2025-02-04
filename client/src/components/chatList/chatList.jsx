@@ -22,7 +22,7 @@ const ChatList = () => {
         {isPending
           ? "loading..."
           : error
-          ? "Something went wrong!"
+          ? "You need a creat a new chat!"
           : data?.map((chat) => (
               <Link to={`/dashboard/chats/${chat._id}`} key={chat._id}>
                 {chat.title}

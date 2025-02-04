@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import path from "path";
+import url, { fileURLToPath } from "url";
 import ImageKit from "imagekit";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -10,6 +12,8 @@ import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 const port = process.env.PORT || 3000;
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -38,11 +42,6 @@ app.get("/api/upload", (req, res) => {
   res.send(result);
 });
 
-// app.get("/api/test", ClerkExpressRequireAuth(), (req, res) => {
-//   const  userId  = req.auth.userId;
-//  console.log(userId),
-//   res.send("Sucess!");
-// });
 
 app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
   const userId = req.auth.userId;
@@ -144,6 +143,13 @@ app.use((err, req, res, next) => {
   console.log(err.stack);
   res.status(401).send("UNAUTHENTICATED");
 });
+
+app.use(express.static(path.join(__dirname, "../client")))
+
+app.get ("*" ,(req,res,next)=>{
+  res.sendFile(path.join(__dirname, "../client", "index.html"))
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   connect();

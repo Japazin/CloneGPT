@@ -50,16 +50,14 @@ const NewPrompt = ({ data }) => {
 
   const chat = model.startChat({
     history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello" }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Hi, how can I help you today?" }],
-      },
+      data?.history.map(({role,parts})=>({
+        role,
+        parts:[{text:parts[0].text}],
+    })),
     ],
-    // generationConfig: { max_tokens: 100 },
+    gerationConfig: {
+       // generationConfig: { max_tokens: 100 },
+    }
   });
 
   const endRef = useRef(null);
