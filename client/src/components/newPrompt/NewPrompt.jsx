@@ -37,6 +37,7 @@ const NewPrompt = ({ data }) => {
       queryClient
         .invalidateQueries({ queryKey: ["chat", data._id] })
         .then(() => {
+          formRef.current.reset();
           setQuestion("");
           setAnswer("");
           setImg({ isLoading: false, error: "", dbData: {}, aiData: {} });
@@ -62,23 +63,28 @@ const NewPrompt = ({ data }) => {
   });
 
   const endRef = useRef(null);
+  const formRef = useRef(null);
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [question, answer, img.dbData]);
+  }, [data, question, answer, img.dbData]);
 
-  const add = async (text) => {
-    setQuestion(text);
+  const add = async (text, isInitial) => {
+    if (!isInitial) setQuestion(text);
+
     try {
       const result = await chat.sendMessageStream(
         Object.entries(img.aiData).length ? [img.aiData, text] : [text]
       );
+
       let accumulatedText = "";
+
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
         console.log(chunkText);
         accumulatedText += chunkText;
         setAnswer(accumulatedText);
       }
+
       mutation.mutate();
     } catch (error) {
       console.error(error);
@@ -90,8 +96,20 @@ const NewPrompt = ({ data }) => {
     const text = e.target.text.value;
     if (!text) return;
 
-    add(text);
+    add(text, false);
   };
+
+  //IN PRODUCTION WE  DON'T NEED IT
+  const hasRun = useRef(false);
+
+  useEffect(() => {
+    if (!hasRun.current) {
+      if (data?.history?.length === 1) {
+        add(data.history[0].parts[0].text, true);
+      }
+    }
+    hasRun.current = true;
+  }, []);
 
   return (
     <>
@@ -112,7 +130,7 @@ const NewPrompt = ({ data }) => {
         </div>
       )}
       <div className="endChat" ref={endRef}></div>
-      <form className="newForm" onSubmit={handleSubmit}>
+      <form className="newForm" onSubmit={handleSubmit} ref={formRef}>
         <Upload setImg={setImg} />
         <input id="file" type="file" multiple={false} hidden />
         <input type="text" name="text" placeholder="Ask Anything..." />
